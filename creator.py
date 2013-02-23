@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Get from URL the json thingie and download the pictures.
 """
 
@@ -8,6 +9,7 @@ import Image
 from random import shuffle
 
 URL = "http://api.tumblr.com/v2/blog/i-like-breasts.tumblr.com/posts?api_key=suF4S0cT8bmYYE86p4wO7PRerBA1J33aFGfeVcVcyEGktDVVKh"
+IMAGE_DIR = "images/"
 
 class Wallpaper(object):
     """A wallpaper can create itself and set itself."""
@@ -30,15 +32,18 @@ class Wallpaper(object):
         """Resize so that width == w keeping aspect ratio."""
         return img.resize(self._wsize(img,w))
 
-    def download_images(self):
+    def download_images(self, image_dir=IMAGE_DIR):
         """Download the images."""
         picture_urls = self.image_links()
         ret = []
 
+        if not os.path.isdir(image_dir):
+            so.mkdir(image_dir)
+
         print "Total pictures %d" % len(picture_urls)
         for i,pl in enumerate(picture_urls):
             print "%d: %s" % (i, pl)
-            fname = "images/" + os.path.basename(pl)
+            fname = image_dir + os.path.basename(pl)
 
             if not os.path.exists(fname):
                 urllib.urlretrieve(pl, fname)
@@ -83,4 +88,4 @@ class Wallpaper(object):
 
 if __name__ == "__main__":
     w = Wallpaper()
-    w.image().show()
+    w.image().save("/home/fakedrake/Pictures/wallpaper.jpg")
