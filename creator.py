@@ -58,7 +58,7 @@ class Wallpaper(object):
         json_data = response.read()
 
         dict_data = json.loads(json_data)
-        pics = [i['photos'] for i in dict_data['response']['posts']]
+        pics = [i['photos'] for i in dict_data['response']['posts'] if 'photos' in i]
         return [pic[0]['original_size']['url'] for pic in pics]
 
     def height(self, img):
